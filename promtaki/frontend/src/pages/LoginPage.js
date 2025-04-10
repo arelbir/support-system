@@ -40,8 +40,8 @@ const LoginPage = () => {
   return (
     <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
       <div className="w-100" style={{ maxWidth: '400px' }}>
-        <Card>
-          <Card.Body>
+        <Card className="shadow"> {/* Kart'a gölge eklendi */}
+          <Card.Body className="p-4"> {/* Kart içeriği padding'i artırıldı */}
             <h2 className="text-center mb-4">Giriş Yap</h2>
             {error && <Alert variant="danger">{error}</Alert>}
             <Form onSubmit={handleSubmit}>
@@ -52,6 +52,7 @@ const LoginPage = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
+                  placeholder="E-posta adresinizi girin" // Placeholder eklendi
                   required
                 />
               </Form.Group>
@@ -62,18 +63,19 @@ const LoginPage = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
+                  placeholder="Şifrenizi girin" // Placeholder eklendi
                   required
                 />
               </Form.Group>
-              <Button disabled={loading} className="w-100" type="submit">
+              <Button disabled={loading} className="w-100 mt-3 rounded-pill" type="submit"> {/* Buton stili güncellendi */}
                 {loading ? 'Giriş Yapılıyor...' : 'Giriş Yap'}
               </Button>
             </Form>
+            <div className="text-center mt-3"> {/* Ek bilgi kartın içine alındı */}
+              Hesabınız yok mu? <Link to="/register" className="text-primary">Kayıt Ol</Link> {/* Link belirginleştirildi */}
+            </div>
           </Card.Body>
         </Card>
-        <div className="w-100 text-center mt-2">
-          Hesabınız yok mu? <Link to="/register">Kayıt Ol</Link>
-        </div>
       </div>
     </Container>
   );

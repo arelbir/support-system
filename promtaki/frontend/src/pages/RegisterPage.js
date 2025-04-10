@@ -55,7 +55,7 @@ const RegisterPage = () => {
   return (
     <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
       <div className="w-100" style={{ maxWidth: '400px' }}>
-        <Card>
+        <Card className="shadow"> {/* Kart'a gölge eklendi */}
           <Card.Body>
             <h2 className="text-center mb-4">Kayıt Ol</h2>
             {error && <Alert variant="danger">{error}</Alert>}
@@ -68,6 +68,7 @@ const RegisterPage = () => {
                   value={formData.username}
                   onChange={handleChange}
                   required
+                  placeholder="Kullanıcı adınızı girin" // Placeholder eklendi
                 />
               </Form.Group>
               <Form.Group id="email" className="mb-3">
@@ -78,6 +79,7 @@ const RegisterPage = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
+                  placeholder="E-posta adresinizi girin" // Placeholder eklendi
                 />
               </Form.Group>
               <Form.Group id="password" className="mb-3">
@@ -88,6 +90,7 @@ const RegisterPage = () => {
                   value={formData.password}
                   onChange={handleChange}
                   required
+                  placeholder="Şifrenizi girin (en az 6 karakter)" // Placeholder eklendi
                 />
               </Form.Group>
               <Form.Group id="confirmPassword" className="mb-3">
@@ -98,17 +101,18 @@ const RegisterPage = () => {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   required
+                  placeholder="Şifrenizi tekrar girin" // Placeholder eklendi
                 />
               </Form.Group>
-              <Button disabled={loading} className="w-100" type="submit">
+              <Button disabled={loading} className="w-100 mt-3 rounded-pill" type="submit"> {/* Buton stili güncellendi */}
                 {loading ? 'Kayıt Yapılıyor...' : 'Kayıt Ol'}
               </Button>
             </Form>
+            <div className="text-center mt-3"> {/* Ek bilgi kartın içine alındı */}
+              Zaten hesabınız var mı? <Link to="/login" className="text-primary">Giriş Yap</Link> {/* Link belirginleştirildi */}
+            </div>
           </Card.Body>
         </Card>
-        <div className="w-100 text-center mt-2">
-          Zaten hesabınız var mı? <Link to="/login">Giriş Yap</Link>
-        </div>
       </div>
     </Container>
   );
