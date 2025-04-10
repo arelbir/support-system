@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+
+.home-container {
+  background-color: #f8f9fa; /* Açık gri arka plan */
+  font-family: 'Poppins', sans-serif; /* Örnek font */
+}
+
+.logo-shadow {
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.btn-outline-primary {
+  color: #007bff;
+  border-color: #007bff;
+}
+.btn-outline-primary:hover {
+  background-color: #007bff;
+  color: #fff;
+}

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://5000-idx-support-system-1744308464939.cluster-6frnii43o5blcu522sivebzpii.cloudworkstations.dev/api';
 
 // Axios instance oluşturma
 const api = axios.create({
