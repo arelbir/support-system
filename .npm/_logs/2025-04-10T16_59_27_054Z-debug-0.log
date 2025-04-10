@@ -1,0 +1,18 @@
+0 verbose cli /home/ubuntu/.nvm/versions/node/v22.13.0/bin/node /home/ubuntu/.nvm/versions/node/v22.13.0/bin/npm
+1 info using npm@10.9.2
+2 info using node@v22.13.0
+3 silly config load:file:/home/ubuntu/.nvm/versions/node/v22.13.0/lib/node_modules/npm/npmrc
+4 silly config load:file:/home/ubuntu/promtaki/frontend/.npmrc
+5 silly config load:file:/home/ubuntu/.npmrc
+6 silly config load:file:/home/ubuntu/.nvm/versions/node/v22.13.0/etc/npmrc
+7 verbose title npm config list
+8 verbose argv "config" "list"
+9 verbose logfile logs-max:10 dir:/home/ubuntu/.npm/_logs/2025-04-10T16_59_27_054Z-
+10 verbose logfile /home/ubuntu/.npm/_logs/2025-04-10T16_59_27_054Z-debug-0.log
+11 silly logfile done cleaning log files
+12 verbose cwd /home/ubuntu/promtaki/frontend
+13 verbose os Linux 6.1.102
+14 verbose node v22.13.0
+15 verbose npm  v10.9.2
+16 verbose exit 0
+17 info ok
