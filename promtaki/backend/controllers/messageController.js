@@ -1,9 +1,10 @@
 const { Message, User } = require('../models');
+const socketManager = require('../utils/socketManager');
 
 // Mesaj oluşturma
 exports.createMessage = async (req, res) => {
   try {
-    const { content, ticketId, isInternal } = req.body;
+    const { content, ticketId, isInternal, attachments } = req.body;
     
     // Yeni mesaj oluştur
     const message = await Message.create({
@@ -11,7 +12,9 @@ exports.createMessage = async (req, res) => {
       ticketId,
       senderId: req.user.id,
       isInternal: isInternal || false,
-      isRead: false
+      readAt: null,
+      isSystem: false,
+      attachments: attachments || []
     });
 
     // Oluşturulan mesajı ilişkili verilerle birlikte getir
@@ -20,6 +23,35 @@ exports.createMessage = async (req, res) => {
         { model: User, attributes: ['id', 'username', 'email', 'role'] }
       ]
     });
+
+    // Socket.io ile mesajı gerçek zamanlı olarak gönder
+    try {
+      if (isInternal) {
+        // Operatörlere özel mesaj
+        socketManager.emitToTicket(ticketId, 'receive_message', {
+          ...newMessage.toJSON(),
+          isOperatorOnly: true
+        });
+      } else {
+        // Herkese açık mesaj
+        socketManager.emitToTicket(ticketId, 'receive_message', newMessage);
+      }
+      
+      // Eğer müşteri mesaj gönderdiyse, operatörlere bildirim gönder
+      if (req.user.role === 'customer') {
+        socketManager.notifyOperators('new_customer_message', {
+          ticketId,
+          message: newMessage,
+          customer: {
+            id: req.user.id,
+            username: req.user.username
+          }
+        });
+      }
+    } catch (socketError) {
+      console.error('Socket mesaj gönderme hatası:', socketError);
+      // Socket hatası işlemi durdurmayacak
+    }
 
     res.status(201).json({
       message: 'Mesaj başarıyla gönderildi.',
@@ -80,7 +112,7 @@ exports.markMessageAsRead = async (req, res) => {
     
     // Mesajı güncelle
     await message.update({
-      isRead: true
+      readAt: new Date()
     });
 
     res.status(200).json({

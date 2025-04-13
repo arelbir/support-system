@@ -195,7 +195,7 @@ Bu proje MIT lisansı altında lisanslanmıştır. Daha fazla bilgi için [LICEN
 
 ## 👥 Katkıda Bulunanlar
 
-- Ertuğrul Albayrak - Proje Sahibi ve Baş Geliştirici
+- azimmemedov - Proje Sahibi ve Baş Geliştirici
 
 ## 🙏 Teşekkürler
 
