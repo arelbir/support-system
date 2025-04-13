@@ -27,9 +27,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
-    isRead: {
+    readAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null
+    },
+    isSystem: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
+    },
+    attachments: {
+      type: DataTypes.JSONB,
+      defaultValue: []
     }
   });
 

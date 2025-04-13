@@ -54,6 +54,67 @@ module.exports = (sequelize, DataTypes) => {
     resolvedAt: {
       type: DataTypes.DATE,
       allowNull: true
+    },
+    product: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    productId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'Products',
+        key: 'id'
+      }
+    },
+    module: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    moduleId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'Modules',
+        key: 'id'
+      }
+    },
+    type: {
+      type: DataTypes.ENUM('bug', 'suggestion', 'question', 'feature_request', 'other'),
+      defaultValue: 'other'
+    },
+    company: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    notifyEmails: {
+      type: DataTypes.JSON,
+      allowNull: true,
+      defaultValue: []
+    },
+    timeSpent: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    dueDate: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    slaPaused: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    slaPausedAt: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    slaPausedReason: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    history: {
+      type: DataTypes.JSONB,
+      defaultValue: []
     }
   });
 
@@ -88,6 +149,62 @@ module.exports = (sequelize, DataTypes) => {
     Ticket.hasMany(models.AuditLog, {
       foreignKey: 'ticketId'
     });
+    
+    // Ticket belongs to Product
+    if (models.Product) {
+      Ticket.belongsTo(models.Product, {
+        foreignKey: 'productId'
+      });
+    }
+    
+    // Ticket belongs to Module
+    if (models.Module) {
+      Ticket.belongsTo(models.Module, {
+        foreignKey: 'moduleId'
+      });
+    }
+    
+    // Ticket has one TicketTimeMetrics
+    if (models.TicketTimeMetrics) {
+      Ticket.hasOne(models.TicketTimeMetrics, {
+        foreignKey: 'ticketId',
+        as: 'timeMetrics'
+      });
+    }
+    
+    // Ticket has many TimeLogs
+    if (models.TimeLog) {
+      Ticket.hasMany(models.TimeLog, {
+        foreignKey: 'ticketId'
+      });
+    }
+    
+    // Ticket has many KnowledgeBaseArticles as source
+    if (models.KnowledgeBaseArticle) {
+      Ticket.hasMany(models.KnowledgeBaseArticle, {
+        as: 'knowledgeArticles',
+        foreignKey: 'sourceTicketId'
+      });
+    }
+    
+    // Ticket belongsToMany Tags
+    if (models.Tag) {
+      Ticket.belongsToMany(models.Tag, {
+        through: 'TicketTag',
+        as: 'tags',
+        foreignKey: 'ticketId'
+      });
+    }
+    
+    // Ticket belongsToMany Users as assignedOperators (for multiple assignments)
+    if (models.TicketAssignment) {
+      Ticket.belongsToMany(models.User, {
+        through: models.TicketAssignment,
+        as: 'assignedOperators',
+        foreignKey: 'ticketId',
+        otherKey: 'operatorId'
+      });
+    }
   };
 
   return Ticket;

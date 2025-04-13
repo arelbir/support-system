@@ -35,6 +35,35 @@ module.exports = (sequelize, DataTypes) => {
     isActive: {
       type: DataTypes.BOOLEAN,
       defaultValue: true
+    },
+    fullName: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    company: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    department: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    profileImage: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    lastLoginAt: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    preferredLanguage: {
+      type: DataTypes.STRING,
+      defaultValue: 'tr',
+      comment: 'Kullanıcının tercih ettiği dil (tr, en vb.)'
     }
   }, {
     hooks: {
@@ -78,6 +107,41 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.AuditLog, {
       foreignKey: 'userId'
     });
+    
+    // Yeni ilişkiler
+    
+    // User has many KnowledgeBaseArticles (as author)
+    if (models.KnowledgeBaseArticle) {
+      User.hasMany(models.KnowledgeBaseArticle, {
+        as: 'authoredArticles',
+        foreignKey: 'authorId'
+      });
+    }
+    
+    // User has many SavedResponses (as creator)
+    if (models.SavedResponse) {
+      User.hasMany(models.SavedResponse, {
+        as: 'savedResponses',
+        foreignKey: 'createdBy'
+      });
+    }
+    
+    // User has many TimeLogs
+    if (models.TimeLog) {
+      User.hasMany(models.TimeLog, {
+        foreignKey: 'userId'
+      });
+    }
+    
+    // User belongsToMany Tickets through TicketAssignment (for multiple assignments)
+    if (models.TicketAssignment) {
+      User.belongsToMany(models.Ticket, {
+        through: models.TicketAssignment,
+        as: 'multiAssignedTickets',
+        foreignKey: 'operatorId',
+        otherKey: 'ticketId'
+      });
+    }
   };
 
   return User;
